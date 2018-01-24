@@ -18,6 +18,17 @@ def connect_to_db(app):
     db.app = app
     db.init_app(app)
 
+def get_github_by_student(first_name, last_name):
+    QUERY = """
+        SELECT github
+        FROM Students
+        WHERE first_name = :first_name AND last_name = :last_name
+        """
+
+    db_cursor = db.session.execute(QUERY, {'first_name': first_name,
+                                   'last_name': last_name})
+    row = db_cursor.fetchone()
+    return row
 
 def get_student_by_github(github):
     """Given a GitHub account name, print info about the matching student."""
@@ -55,8 +66,23 @@ def make_new_student(first_name, last_name, github):
                                'github': github})
     db.session.commit()
 
-    print "Successfully added student: {first} {last}".format(
-        first=first_name, last=last_name)
+
+def make_new_project(title, desc, grade):
+    """Add a new student and print confirmation.
+
+    Given a first name, last name, and grade account, add student to the
+    database and print a confirmation message.
+    """
+
+    QUERY = """
+        INSERT INTO projects (title, description, max_grade)
+          VALUES (:title, :desc, :grade)
+        """
+
+    db.session.execute(QUERY, {'title': title,
+                               'desc': desc,
+                               'grade': grade})
+    db.session.commit()
 
 
 def get_project_by_title(title):
@@ -158,7 +184,7 @@ def get_grades_by_title(title):
 
 def get_all_students():
 
-    QUERY = "SELECT first_name, last_name, github FROM students"
+    QUERY = "SELECT first_name, last_name, github FROM students ORDER BY first_name"
     db_cursor = db.session.execute(QUERY)
     rows = db_cursor.fetchall()
 
@@ -166,7 +192,7 @@ def get_all_students():
 
 def get_all_projects():
 
-    QUERY = "SELECT title FROM projects"
+    QUERY = "SELECT title FROM projects ORDER BY title"
     db_cursor = db.session.execute(QUERY)
     rows = db_cursor.fetchall()
 

@@ -1,0 +1,32 @@
+<!doctype html>
+<html>
+<head>
+    <title>Grade Student</title>
+</head>
+
+<body>
+  <h1>Grade Student</h1>
+
+  <form action="/grade-add" method="POST">
+    <div>
+      <select name="name">
+        {% for name in student_names %}
+          <option value="{{ name }}">{{ name }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <div>
+      <select name="project">
+        {% for project in projects %}
+          <option value="{{ project[0] }}">{{ project[0] }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <div>
+      <input type="text" name="grade">Enter the grade: </input>
+      <input type="submit"></input>
+    </div>
+  </form>
+
+</body>
+</html>

@@ -40,19 +40,6 @@ def enter_student():
     return render_template("student_add.html")
 
 
-@app.route("/project")
-def show_project_info():
-
-    project_title = request.args.get('title')
-
-    project_info = hackbright.get_project_by_title(project_title)
-    student_grade_info = hackbright.get_grades_by_title(project_title)
-
-    return render_template("project_info.html",
-                            project_info=project_info,
-                            student_grade_info=student_grade_info)
-
-
 @app.route("/student-add", methods=['POST'])
 def student_add():
 
@@ -63,6 +50,57 @@ def student_add():
     hackbright.make_new_student(first, last, github)
     return render_template("student_added.html", first=first, last=last,
                            github=github)
+
+
+@app.route("/enter-project")
+def enter_project():
+
+    return render_template("project_add.html")
+
+
+@app.route("/project-add", methods=['POST'])
+def project_add():
+
+    title = request.form.get("title")
+    desc = request.form.get("desc")
+    grade = request.form.get("grade")
+
+    hackbright.make_new_project(title, desc, grade)
+    return render_template("project_added.html", title=title, desc=desc,
+                           grade=grade)
+
+
+@app.route("/enter-grade")
+def enter_grade():
+    student_names = hackbright.get_all_students()
+    projects = hackbright.get_all_projects()
+    return render_template("grade_add.html", students=student_names, projects=projects)
+
+
+@app.route("/grade-add", methods=["POST"])
+def grade_add():
+
+    name = request.form.get("name")
+    project = request.form.get("project")
+    grade = request.form.get("grade")
+
+    first_name, last_name = name.split()
+    github = get_github_by_student(first_name, last_name)
+    assign_grade(github, title, grade)
+
+
+@app.route("/project")
+def show_project_info():
+
+    project_title = request.args.get('title')
+
+    project_info = hackbright.get_project_by_title(project_title)
+    student_grade_info = hackbright.get_grades_by_title(project_title)
+
+    return render_template("project_info.html",
+                           project_info=project_info,
+                           student_grade_info=student_grade_info)
+
 
 
 if __name__ == "__main__":

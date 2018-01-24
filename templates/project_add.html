@@ -1,0 +1,30 @@
+<!doctype html>
+<html>
+<head>
+    <title>Add a Project</title>
+</head>
+
+<body>
+  <h1>Enter Project Details</h1>
+
+  <form action="/project-add" method="POST">
+    <div>
+      <label>Enter project title: 
+          <input type="text" name="title">
+      </label>
+    </div><br>
+    <div>
+      <label style="vertical-align: top">Enter project description:
+          <textarea name="desc" rows="5" cols="50"></textarea>
+      </label>
+    </div><br>
+    <div>
+      <label>Enter max grade: 
+          <input type="text" name="grade">
+      </label>
+     </div><br>
+      <input type="submit" value="Add Project">
+  </form>
+
+</body>
+</html>
