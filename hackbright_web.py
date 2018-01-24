@@ -72,8 +72,10 @@ def project_add():
 
 @app.route("/enter-grade")
 def enter_grade():
+
     student_names = hackbright.get_all_students()
     projects = hackbright.get_all_projects()
+
     return render_template("grade_add.html", students=student_names, projects=projects)
 
 
@@ -85,8 +87,8 @@ def grade_add():
     grade = request.form.get("grade")
 
     first_name, last_name = name.split()
-    github = get_github_by_student(first_name, last_name)
-    assign_grade(github, title, grade)
+    github = hackbright.get_github_by_student(first_name, last_name)
+    hackbright.assign_grade(github, project, grade)
 
 
 @app.route("/project")
